@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import computerImage from "../assets/computer.png";
+import { CTAButton } from "../components/CTAButton";
 
 export default function Home() {
-  const navigate = useNavigate();
-
   return (
     <div className="flex justify-between p-16 flex-col-reverse lg:flex-row">
       <div className="max-w-lg">
@@ -15,12 +14,9 @@ export default function Home() {
           Make smart clinical decisions and seamless claims with RADRAG – your
           LLM-based standardization tool for radiology free-text.
         </div>
-        <button
-          onClick={() => navigate("/playground")}
-          className="px-6 py-3 bg-blue-500 text-white rounded-md text-body1 hover:bg-blue-400 font-semibold"
-        >
-          GET STARTED
-        </button>
+        <Link to="/playground" className="flex">
+          <CTAButton name={"Real-time Standardization"} />
+        </Link>
       </div>
       <img
         src={computerImage}

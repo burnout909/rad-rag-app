@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Features from "./pages/Features";
 import Team from "./pages/Team";
 import Playground from "./pages/Playground";
+import Folder from "./pages/Folder";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/features" element={<Features />} />
         <Route path="/team" element={<Team />} />
         <Route path="/playground" element={<Playground />} />
+        <Route path="/folder" element={<Folder />} />
       </Routes>
     </Router>
   );

@@ -14,6 +14,14 @@ export default function Navbar() {
           <Link to="/team">Team</Link>
         </div>
       </div>
+      <div className="flex gap-6">
+        <Link to="/playground">
+          <text className="text-base font-[600] text-blue-500">Real-time</text>
+        </Link>
+        <Link to="/folder">
+          <text className="text-base font-[600] text-blue-500">Upload</text>
+        </Link>
+      </div>
     </nav>
   );
 }
