@@ -55,17 +55,17 @@ export default function Folder() {
       className="max-w-[1000px] mx-auto px-4 py-10 font-pretendard"
       style={{ color: "#26262C" }}
     >
-      {/* 헤더 */}
-      <div className="flex items-center gap-3 mb-8 w-full max-w-[600px] mx-auto">
-        <img
-          src={resetIcon}
-          alt="Reset"
-          className="w-6 h-6 cursor-pointer"
-          onClick={handleReset}
-        />
+      {/* header */}
+      <div className="flex items-center justify-between gap-3 mb-4 w-full max-w-[600px] mx-auto">
         <h1 className="text-xl font-bold text-left">
           Standardize Your File Dummies
         </h1>
+        <img
+          src={resetIcon}
+          alt="Reset"
+          className="w-8 h-8 cursor-pointer"
+          onClick={handleReset}
+        />
       </div>
 
       {/* 결과 or 업로드 박스 */}

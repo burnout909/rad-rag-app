@@ -30,9 +30,11 @@ export default function Playground() {
         procedureId: selectedProcedure,
         note: clinicalNote,
       });
+      console.log(result);
       setStandardizedResults(result); // standardization results
     } catch (error) {
       setStandardizedResults([]); // failure -> reset
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

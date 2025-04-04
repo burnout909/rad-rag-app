@@ -39,9 +39,9 @@ export default function Dropzone({
       uploadStatus.toLowerCase().includes("fail") ||
       uploadStatus.toLowerCase().includes("only")
     ) {
-      return "#FF6767"; 
+      return "#FF6767";
     }
-    return "#3FA780"; 
+    return "#3FA780";
   };
 
   return (
@@ -63,14 +63,18 @@ export default function Dropzone({
 
       {!selectedFile && (
         <>
-          <img src={uploadIcon} alt="Upload" className="w-[60px] h-[60px] mb-4" />
+          <img
+            src={uploadIcon}
+            alt="Upload"
+            className="w-[60px] h-[60px] mb-4"
+          />
           <p className="text-lg font-semibold text-black mb-2">
             Upload File (csv, pdf, xlsx, jpeg, png)
           </p>
           <button
-            className="mt-4 px-4 py-2 text-black border border-black rounded-md font-medium transition duration-200 hover:bg-[#C2ECE6]"
+            className="mt-4 px-4 py-2 text-black border border-black rounded-md font-medium hover:bg-[#E4E4E8]"
             onClick={(e) => {
-              e.stopPropagation(); 
+              e.stopPropagation();
               fileInputRef.current?.click();
             }}
           >
@@ -85,19 +89,20 @@ export default function Dropzone({
         style={{ color: getMessageColor() }}
       >
         {uploadStatus && <p>{uploadStatus}</p>}
-        {selectedFile && uploadStatus.toLowerCase().includes("successfully") && (
-          <button
-            id="submitBtn"
-            className="mt-4 px-4 py-2 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
-            style={{ backgroundColor: "#678AFF" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onSubmit();
-            }}
-          >
-            Go!
-          </button>
-        )}
+        {selectedFile &&
+          uploadStatus.toLowerCase().includes("successfully") && (
+            <button
+              id="submitBtn"
+              className="mt-4 px-4 py-2 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+              style={{ backgroundColor: "#678AFF" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSubmit();
+              }}
+            >
+              Go!
+            </button>
+          )}
       </div>
     </div>
   );
