@@ -1,54 +1,86 @@
-# React + TypeScript + Vite
+# 🛠️ RADRAG
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 📌 Overview
+This project was developed as part of the AGI Agent Application Hackathon.  
+It aims to solve a critical bottleneck in data standardization for healthcare systems.  
+In particular, standardized data is essential not only for accurate insurance claims but also for securing competitive, high-quality datasets in the AI era.  
+At institutions like Severance Hospital, a dedicated Data Services Team is working on structured data, but unstructured clinical texts such as free-text descriptions remain largely untouched.  
+This project addresses that gap by enabling the standardization of radiology free-text reports.
 
-Currently, two official plugins are available:
+RADRAG is a **Retrieval-Augmented Generation (RAG)** based tool that standardizes free-text radiology reports into **SNOMED CT** concepts.
+It is designed for use in **clinical settings**, integrating external terminology knowledge and extraction models to enable precise concept mapping.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🚀 Key Features
+✅ Real-time EMR Integration: Enables real-time standardization of clinical notes directly connected to EMR systems, helping to break down data silos.
+✅ Batch File Standardization: Supports one-click standardization of existing unstructured report archives.
 
-## Expanding the ESLint configuration
+### 🖼️ Demo / Screenshots
+![image](https://github.com/user-attachments/assets/e155609e-34f8-4828-8143-8c9422f2ee0d)
+[Optional demo video link: e.g., YouTube]
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🧩 Tech Stack
+- **Frontend**: React + Tailwind + Typescript
+- **Backend**: Flask
+- **Others**: **Upstage API**, Lanchain, sentence-transformer model, Vite, Vercel, cloudtype
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 🏗️ Project Structure
+```
+📁 project-name/
+├── frontend/
+├── backend/
+├── assets/
+├── README.md
+└── ...
+```
+## Preparing the Dataset
+
+### 1. Download SNOMED CT
+
+- Download the [SNOMED CT International version](https://www.nlm.nih.gov/healthit/snomedct/index.html) from the UMLS website.
+- Registration and license approval are required.
+- Once downloaded, store the vocabulary files in the `data/` directory.
+⚠️ The SNOMED CT files are **not included** in this repository due to licensing restrictions.
+
+### 2. Flatten SNOMED CT Hierarchy
+
+SNOMED CT is hierarchical by design. To enable effective embedding and search, a flat version of the terminology is needed:
+
+```bash
+python process_data.py make-flattened-terminology
+```
+### 3. Generate SNOMED CT Dictionary
+This step creates a dictionary file containing terms related to the flattened concept list:
+
+```bash
+python process_data.py generate-sct-dictionary --output-path assets/newdict_snomed.txt
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Building the FAISS Index
+We use sentence-transformers/all-MiniLM-L12-v2 as our embedding model.
+Concepts are grouped by concept_type_subset, and separate FAISS indices are built for each group.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Relevant code: [rag/generate_snomedct_faiss.py](https://github.com/burnout909/RADRAG/blob/main/rag/generate_snomedct_faiss.py
+)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Free-text Extraction & Mapping
+We use the **Upstage Information Extraction API**, which supports key-based entity extraction.
+Keys are aligned with the concept_type_subset definitions used for SNOMED CT.
+
+The extracted results are mapped to the nearest concepts in the corresponding FAISS index.
+
+Relevant code: [rag/extraction.py](https://github.com/burnout909/RADRAG/blob/main/rag/extraction.py)
+
+### 🙌 Team Members
+
+| Name        | Role               | GitHub                             |
+|-------------|--------------------|------------------------------------|
+| Kim Minseong     |  Leed Developer | [@kimups](https://github.com/johndoe) |
+| Lee Junyeong  | Backend Developer  | [@parkstage](https://github.com/janedev) |
+| Kark Minuk  | Frontend Developer  | [@parkstage](https://github.com/janedev) |
+
+### ⏰ Development Period
+- Last updated: 2025-04-05
+
+### 📄 License
+This project is licensed under the [MIT license](https://opensource.org/licenses/MIT).  
+See the LICENSE file for more details.
