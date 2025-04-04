@@ -1,28 +1,46 @@
 import { useState } from "react";
-import { standardizeNote } from "../api/standardize";
+import { getStandardizedNote } from "../api/standardize";
 import xrayImage from "../assets/x-ray.png";
+import Spinner from "../components/Loading";
 
 const mockPatients = ["12334", "45678", "98765"];
 const mockProcedures = ["0001.dcm", "0002.dcm", "0003.dcm"];
+
+interface StandardizedRow {
+  Hierarchy: string;
+  "Input Description": string;
+  "Concept Name": string;
+  "Concept ID": string;
+}
 
 export default function Playground() {
   const [selectedPatient, setSelectedPatient] = useState(mockPatients[0]);
   const [selectedProcedure, setSelectedProcedure] = useState(mockProcedures[0]);
   const [clinicalNote, setClinicalNote] = useState("");
-  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [standardizedResults, setStandardizedResults] = useState<
+    StandardizedRow[]
+  >([]);
 
   const handleStandardize = async () => {
-    setMessage("Sending to backend...");
+    setIsLoading(true);
     try {
-      const result = await standardizeNote({
+      const result = await getStandardizedNote({
         patientId: selectedPatient,
         procedureId: selectedProcedure,
         note: clinicalNote,
       });
-      setMessage(`Response: ${JSON.stringify(result)}`);
+      setStandardizedResults(result); // standardization results
     } catch (error) {
-      setMessage("Error sending to backend.");
+      setStandardizedResults([]); // failure -> reset
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const clearInputText = () => {
+    setStandardizedResults([]); // reset
+    setClinicalNote("");
   };
 
   const handleFindTag = () => {
@@ -179,24 +197,58 @@ export default function Playground() {
         <label className="flex mb-4 font-semibold text-[#26262C] text-xl">
           Clinical Notes
         </label>
-        <div className="bg-white rounded-xl space-y-4 flex flex-col">
-          <textarea
-            value={clinicalNote}
-            onChange={(e) => setClinicalNote(e.target.value)}
-            placeholder="Radiology Clinical Reports"
-            className="w-100 h-50 border rounded-md px-4 py-2 resize-none"
-            style={{ borderColor: "#E4E4E8" }}
-          />
-          <button
-            onClick={handleStandardize}
-            className="bg-blue-500 hover:bg-blue-400 text-white px-6 py-2 w-60 rounded-md font-semibold"
-          >
-            Standardization
-          </button>
-          {message && (
-            <p className="text-sm" style={{ color: "#E4E4E8" }}>
-              {message}
-            </p>
+        <div className="flex gap-4">
+          <div className="flex flex-col bg-white rounded-xl space-y-4 ">
+            <textarea
+              value={clinicalNote}
+              onChange={(e) => setClinicalNote(e.target.value)}
+              placeholder="Radiology Clinical Reports"
+              className="w-100 h-50 border rounded-md px-4 py-2 resize-none"
+              style={{ borderColor: "#E4E4E8" }}
+            />
+            {standardizedResults.length == 0 ? (
+              <button
+                onClick={handleStandardize}
+                className="flex justify-center items-center bg-blue-500 hover:bg-blue-400 text-white px-6 py-2 w-60 rounded-md font-semibold"
+                disabled={isLoading}
+              >
+                {isLoading ? <Spinner /> : "Standardization"}
+              </button>
+            ) : (
+              <button
+                onClick={clearInputText}
+                className="bg-blue-500 hover:bg-blue-400 text-white px-6 py-2 w-60 rounded-md font-semibold"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+          {standardizedResults.length > 0 && (
+            <div className="flex flex-col bg-white rounded-xl shadow px-6 py-4">
+              <h3 className="text-lg font-semibold mb-4 text-[#26262C]">
+                SNOMED CT Mapping Results
+              </h3>
+              <table className="table-auto w-full text-sm">
+                <thead className="bg-gray-100 text-[#474653]">
+                  <tr>
+                    <th className="px-4 py-2 text-left">Hierarchy</th>
+                    <th className="px-4 py-2 text-left">Input Description</th>
+                    <th className="px-4 py-2 text-left">Concept Name</th>
+                    <th className="px-4 py-2 text-left">Concept ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {standardizedResults.map((row, idx) => (
+                    <tr key={idx} className="border-t">
+                      <td className="px-4 py-2">{row.Hierarchy}</td>
+                      <td className="px-4 py-2">{row["Input Description"]}</td>
+                      <td className="px-4 py-2">{row["Concept Name"]}</td>
+                      <td className="px-4 py-2">{row["Concept ID"]}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
