@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import uploadIcon from "../assets/upload.svg";
 
 interface DropzoneProps {
   selectedFile: File | null;
@@ -18,7 +19,6 @@ export default function Dropzone({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
       onFileSelect(e.target.files[0]);
-      
       e.target.value = "";
     }
   };
@@ -35,7 +35,10 @@ export default function Dropzone({
 
   const getMessageColor = () => {
     if (!uploadStatus) return "";
-    if (uploadStatus.toLowerCase().includes("fail") || uploadStatus.toLowerCase().includes("only")) {
+    if (
+      uploadStatus.toLowerCase().includes("fail") ||
+      uploadStatus.toLowerCase().includes("only")
+    ) {
       return "#FF6767"; 
     }
     return "#3FA780"; 
@@ -44,8 +47,7 @@ export default function Dropzone({
   return (
     <div
       id="dropZone"
-      className="w-[90%] h-[440px] rounded-md flex flex-col justify-center items-center text-xl font-bold text-center cursor-pointer px-4 transition mx-auto"
-      style={{ backgroundColor: "#D9D9D9", color: "#26262C" }}
+      className="w-[90%] max-w-[600px] min-h-[440px] border-2 border-dashed border-black rounded-md flex flex-col justify-center items-center text-center px-4 py-6 mx-auto transition"
       onClick={handleClick}
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
@@ -58,15 +60,40 @@ export default function Dropzone({
         hidden
         onChange={handleFileChange}
       />
-      <p className="text-lg font-semibold">Upload your file here</p>
-      <div className="mt-4 text-sm text-center max-w-[90%] break-words" style={{ color: getMessageColor() }}>
+
+      {!selectedFile && (
+        <>
+          <img src={uploadIcon} alt="Upload" className="w-[60px] h-[60px] mb-4" />
+          <p className="text-lg font-semibold text-black mb-2">
+            Upload File (csv, pdf, xlsx, jpeg, png)
+          </p>
+          <button
+            className="mt-4 px-4 py-2 text-black border border-black rounded-md font-medium transition duration-200 hover:bg-[#C2ECE6]"
+            onClick={(e) => {
+              e.stopPropagation(); 
+              fileInputRef.current?.click();
+            }}
+          >
+            Browse File
+          </button>
+        </>
+      )}
+
+      {/* 상태 메시지 + Go 버튼 */}
+      <div
+        className="mt-4 text-sm text-center max-w-[90%] break-words"
+        style={{ color: getMessageColor() }}
+      >
         {uploadStatus && <p>{uploadStatus}</p>}
-        {selectedFile && (
+        {selectedFile && uploadStatus.toLowerCase().includes("successfully") && (
           <button
             id="submitBtn"
             className="mt-4 px-4 py-2 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
             style={{ backgroundColor: "#678AFF" }}
-            onClick={onSubmit}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSubmit();
+            }}
           >
             Go!
           </button>
