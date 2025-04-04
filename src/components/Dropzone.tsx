@@ -18,6 +18,8 @@ export default function Dropzone({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
       onFileSelect(e.target.files[0]);
+      
+      e.target.value = "";
     }
   };
 
@@ -31,28 +33,39 @@ export default function Dropzone({
     if (!selectedFile) fileInputRef.current?.click();
   };
 
+  const getMessageColor = () => {
+    if (!uploadStatus) return "";
+    if (uploadStatus.toLowerCase().includes("fail") || uploadStatus.toLowerCase().includes("only")) {
+      return "#FF6767"; 
+    }
+    return "#3FA780"; 
+  };
+
   return (
     <div
       id="dropZone"
-      className="w-full h-[477px] bg-neutral-6 rounded-md flex flex-col justify-center items-center text-xl font-bold text-neutral-1 text-center cursor-pointer px-4 transition"
+      className="w-[90%] h-[440px] rounded-md flex flex-col justify-center items-center text-xl font-bold text-center cursor-pointer px-4 transition mx-auto"
+      style={{ backgroundColor: "#D9D9D9", color: "#26262C" }}
       onClick={handleClick}
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
     >
       <input
+        key={selectedFile?.name || "input-key"}
         ref={fileInputRef}
         type="file"
-        accept=".csv,application/pdf,image/png,image/jpeg"
+        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, image/png, image/jpeg"
         hidden
         onChange={handleFileChange}
       />
-      <p className="text-lg font-semibold">파일 업로드 창</p>
-      <div className="mt-4 text-sm text-center max-w-[90%] break-words">
+      <p className="text-lg font-semibold">Upload your file here</p>
+      <div className="mt-4 text-sm text-center max-w-[90%] break-words" style={{ color: getMessageColor() }}>
         {uploadStatus && <p>{uploadStatus}</p>}
         {selectedFile && (
           <button
             id="submitBtn"
-            className="mt-4 px-4 py-2 bg-main-blue text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+            className="mt-4 px-4 py-2 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+            style={{ backgroundColor: "#678AFF" }}
             onClick={onSubmit}
           >
             Go!

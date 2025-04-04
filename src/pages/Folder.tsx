@@ -6,28 +6,29 @@ export default function Folder() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>("");
   const [result, setResult] = useState<any>(null);
+  const [uploadKey, setUploadKey] = useState<number>(0); 
 
   const handleUploadPrepare = (file: File) => {
     const allowedTypes = [
       "text/csv",
-      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "application/pdf",
       "image/png",
       "image/jpeg",
     ];
 
     if (!allowedTypes.includes(file.type)) {
-      setUploadStatus("❌ CSV, PDF 또는 이미지 파일만 업로드할 수 있습니다.");
+      setUploadStatus("Only CSV, XLSX, PDF, or image files are allowed.");
       return;
     }
 
     setSelectedFile(file);
-    setUploadStatus(`✅ "${file.name}" Upload complete`);
+    setUploadStatus(`"${file.name}" uploaded successfully.`);
   };
 
   const handleSubmit = async () => {
     if (!selectedFile) return;
-    setUploadStatus(`📤 "${selectedFile.name}" loading...`);
+    setUploadStatus(`Uploading "${selectedFile.name}"...`);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -40,7 +41,7 @@ export default function Folder() {
       const result = await res.json();
       setResult(result);
     } catch (err) {
-      setUploadStatus("❌ 서버 요청 실패");
+      setUploadStatus("Failed to request server.");
     }
   };
 
@@ -48,15 +49,20 @@ export default function Folder() {
     setSelectedFile(null);
     setUploadStatus("");
     setResult(null);
+    setUploadKey(prev => prev + 1); 
   };
 
   return (
-    <main className="max-w-[1000px] mx-auto px-4 py-10 font-pretendard text-neutral-1">
+    <main
+      className="max-w-[1000px] mx-auto px-4 py-10 font-pretendard"
+      style={{ color: "#26262C" }}
+    >
+      {/* 헤더 영역 */}
       <div className="flex items-center gap-3 mb-8 w-[900px] mx-auto">
         <img
           id="resetIcon"
           src={resetIcon}
-          alt="반복 아이콘"
+          alt="Reset"
           className="w-6 h-6 cursor-pointer"
           onClick={handleReset}
         />
@@ -65,13 +71,24 @@ export default function Folder() {
         </h1>
       </div>
 
+      {/* 결과 출력 또는 업로드 영역 */}
       {result ? (
-        <div className="w-full min-h-[477px] bg-neutral-7 rounded-xl p-6 border border-neutral-5 text-sm text-neutral-2 leading-relaxed">
-          <h2 className="text-lg font-semibold mb-4">📋 추출 결과</h2>
-          <pre className="whitespace-pre-wrap break-words">{JSON.stringify(result, null, 2)}</pre>
+        <div
+          className="w-full min-h-[477px] rounded-xl p-6 border text-sm leading-relaxed"
+          style={{
+            backgroundColor: "#EFEFF1", 
+            borderColor: "#CECDD5",     
+            color: "#6B6A7B",          
+          }}
+        >
+          <h2 className="text-lg font-semibold mb-4">Extracted Result</h2>
+          <pre className="whitespace-pre-wrap break-words">
+            {JSON.stringify(result, null, 2)}
+          </pre>
         </div>
       ) : (
         <Dropzone
+          key={uploadKey}
           selectedFile={selectedFile}
           onFileSelect={handleUploadPrepare}
           onSubmit={handleSubmit}
