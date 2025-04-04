@@ -22,7 +22,7 @@ export default function Home() {
         </button>
       </div>
       <img
-        src="/src/assets/computer.png"
+        src="../assets/computer.png"
         alt="illustration"
         className="max-w-xl mb-8 lg:mb-0"
       />

@@ -118,7 +118,7 @@ export default function Playground() {
           </select>
           <div className="flex flex-col bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] w-100 justify-center px-8 py-6">
             <img
-              src="/src/assets/x-ray.png"
+              src="../assets/x-ray.png"
               alt="X-ray"
               className="object-cover w-80"
             />
