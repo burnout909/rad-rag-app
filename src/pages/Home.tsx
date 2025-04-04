@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import computerImage from "../assets/computer.png";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Home() {
         </button>
       </div>
       <img
-        src="../assets/computer.png"
+        src={computerImage}
         alt="illustration"
         className="max-w-xl mb-8 lg:mb-0"
       />

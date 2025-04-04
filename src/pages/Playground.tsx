@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { standardizeNote } from "../api/standardize";
+import xrayImage from "../assets/x-ray.png";
 
 const mockPatients = ["12334", "45678", "98765"];
 const mockProcedures = ["0001.dcm", "0002.dcm", "0003.dcm"];
@@ -29,8 +30,8 @@ export default function Playground() {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto p-8 space-y-8">
-      <div className="flex-col">
+    <div className="max-w-screen-xl mx-auto p-8 space-y-8 flex flex-col items-center">
+      <div className="flex-col w-[90%]">
         <label className="block mb-3 font-semibold text-[#26262C] text-xl">
           Patient
         </label>
@@ -99,7 +100,7 @@ export default function Playground() {
         </div>
       </div>
 
-      <div className="flex-col">
+      <div className="flex-col w-[90%]">
         <label className="block mb-3 font-semibold text-[#26262C] text-xl">
           Procedures
         </label>
@@ -117,11 +118,7 @@ export default function Playground() {
             ))}
           </select>
           <div className="flex flex-col bg-white shadow-[0_2px_8px_rgba(0,0,0,0.12)] w-100 justify-center px-8 py-6">
-            <img
-              src="../assets/x-ray.png"
-              alt="X-ray"
-              className="object-cover w-80"
-            />
+            <img src={xrayImage} alt="X-ray" className="object-cover w-80" />
           </div>
           <div className="flex flex-col bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.12)] w-100 justify-center px-8 py-6">
             <h2 className="font-semibold mb-4 text-[#26262C]">
@@ -178,8 +175,8 @@ export default function Playground() {
         </div>
       </div>
 
-      <div>
-        <label className="block mb-4 font-semibold text-[#26262C] text-xl">
+      <div className="flex-col w-[90%]">
+        <label className="flex mb-4 font-semibold text-[#26262C] text-xl">
           Clinical Notes
         </label>
         <div className="bg-white rounded-xl space-y-4 flex flex-col">
