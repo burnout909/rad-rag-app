@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "/src/components/Navbar";
-import Home from "/src/pages/Home";
-import About from "/src/pages/About";
-import Features from "/src/pages/Features";
-import Team from "/src/pages/Team";
-import Playground from "/src/pages/Playground";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Features from "./pages/Features";
+import Team from "./pages/Team";
+import Playground from "./pages/Playground";
 
 export default function App() {
   return (
