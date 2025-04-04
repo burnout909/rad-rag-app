@@ -21,8 +21,8 @@ It is designed for use in **clinical settings**, integrating external terminolog
 ### 🧩 Tech Stack
 - **Frontend**: React + Tailwind + Typescript
 - **Backend**: Flask
-- **Others**: Upstage API, Lanchain, sentence-transformer model, Vite, Vercel, cloudtype
-- 
+- **Others**: **Upstage API**, Lanchain, sentence-transformer model, Vite, Vercel, cloudtype
+
 ### 🏗️ Project Structure
 ```
 📁 project-name/
@@ -84,6 +84,3 @@ Relevant code: [rag/extraction.py](https://github.com/burnout909/RADRAG/blob/mai
 ### 📄 License
 This project is licensed under the [MIT license](https://opensource.org/licenses/MIT).  
 See the LICENSE file for more details.
-
-### 💬 Additional Notes
-- Feel free to include any other relevant notes or links here.
