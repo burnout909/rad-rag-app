@@ -3,7 +3,7 @@ export async function getStandardizedNote(payload: {
   procedureId: string;
   note: string;
 }) {
-  const response = await fetch("http://127.0.0.1:5000/.com/api/standardize", {
+  const response = await fetch("http://127.0.0.1:5000/api/standardize", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
