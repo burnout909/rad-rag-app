@@ -10,7 +10,7 @@ export default function Navbar() {
         </Link>
         <div className="flex gap-6 font-[600] text-base text-[#474653]">
           <Link to="/about">About</Link>
-          <Link to="/features">Features</Link>
+          <Link to="/development">Development</Link>
           <Link to="/team">Team</Link>
         </div>
       </div>
