@@ -4,7 +4,7 @@ export async function getStandardizedNote(payload: {
   note: string;
 }) {
   const response = await fetch(
-    "https://rad-rag-backend.onrender.com/api/standardize",
+    "https://rad-rag-backend-2.onrender.com/api/standardize",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
