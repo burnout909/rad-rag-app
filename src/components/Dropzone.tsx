@@ -39,7 +39,7 @@ export default function Dropzone({
       uploadStatus.toLowerCase().includes("fail") ||
       uploadStatus.toLowerCase().includes("only")
     ) {
-      return "#FF6767";
+      return "#3FA780";
     }
     return "#3FA780";
   };

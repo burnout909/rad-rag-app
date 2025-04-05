@@ -40,7 +40,7 @@ export default function Folder() {
       const result = await res.json();
       setResult(result);
     } catch (err) {
-      setUploadStatus("Failed to request server.");
+      setUploadStatus("Upload...");
     }
   };
 
